@@ -1,24 +1,22 @@
 # Submission files
 
-For the final A2 folder in D2L, use the report PDF, testing record and your
-repository link:
+The final A2 folder needs one report PDF covering Tasks 1-6, the public repository
+link, testing evidence and an AI-use record. They are all staged in
+`output/submission/submit-to-d2l/`. Checkpoint A stays separate.
 
-https://github.com/McMerger/COMP3415-A2-Campus-Supply-Desk
+Repo: https://github.com/McMerger/COMP3415-A2-Campus-Supply-Desk
 
-The repository is public. The ready-to-upload files are in
-`output/submission/submit-to-d2l/`. The testing record refers to logs supplied
-inside the evidence ZIP. The separate AI note expands on the section already
-included in the report.
+The seven-page report follows the original handout. It includes exactly five
+diagnoses (three smells, a test gap and a defect), three refactorings, four testing
+categories, CR-01 and three AI decisions. The planning note recovers an actual
+pre-implementation chat excerpt and identifies its limits. The AI record contains
+an actual final-review interaction; it is not backdated.
 
-The outer submission package also keeps the source snapshot, Git bundle and
-offline verification log as backup. The reconstructed handout is unofficial
-background material, not a submission requirement. Keep Checkpoint A separate.
-Nothing has been uploaded to D2L.
+There are 50 passing tests and seven caught mutations. The outer backup package
+also holds source, Git history and an offline restore check. No D2L upload has
+been made. Earlier reconstructed-handout files are historical, not the assessment
+reference now that the original handout is available.
 
-Run `python -m unittest discover -s tests -v` to check the code. Use
-`python scripts/verify.py` for the seven extra mistake checks. Report PDFs can be
-rebuilt with `scripts/build_report.py` using ReportLab; the application itself
-needs only Python's standard library.
-
-The PDFs use a handwritten-style font embedded in the files. The build script
-uses Segoe Print when available; `--typed` gives a regular serif version.
+PDFs use an embedded handwriting-style font. The build helper uses ReportLab and
+Segoe Print when available; --typed produces a conventional version. The app and
+tests themselves need only Python's standard library.

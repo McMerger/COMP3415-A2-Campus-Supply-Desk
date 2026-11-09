@@ -11,6 +11,7 @@ Repo: https://github.com/McMerger/COMP3415-A2-Campus-Supply-Desk
 - [Testing notes](output/pdf/Testing-Record.pdf)
 - [AI suggestion notes](output/pdf/AI-Evaluation.pdf)
 - [Repository link](output/pdf/GitHub-Link.pdf)
+- [AI-use record](docs/ai-interactions.md)
 
 The editable text is in `docs/`. Test output is in `evidence/`.
 Checkpoint A is a separate submission.
@@ -45,7 +46,7 @@ python -m unittest discover -s tests -v
 python scripts/verify.py
 ```
 
-There are 49 passing test methods. The second command also checks seven wrong
+There are 50 passing test methods. The second command also checks seven wrong
 changes in temporary copies. It leaves the working code alone and updates logs
 07-09. Older logs keep the before-and-after results.
 

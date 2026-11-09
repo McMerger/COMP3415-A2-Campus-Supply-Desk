@@ -1,33 +1,29 @@
-# Local review notes
+# Final review against the original handout
 
-November 8, 2026
+The actual Software Rescue Mission handout was checked during this revision.
+The report now follows Tasks 1-6 and includes the public repository link.
 
-## Code and evidence
+There are exactly five diagnoses: duplication, magic numbers, unclear money-unit
+names, limited regression coverage, and repeated cancellation. The three selected
+smells have separate before/change/reason/after/verification explanations.
+The monetary-name refactor was added now and is dated accordingly.
 
-The report was checked against the original commit, development history and test
-logs. The three bugs have failing tests before their fixes. The shared-code
-refactor was committed separately and kept the same failing cases before those
-corrections.
+The four test categories have reasons plus expected and actual results. The suite
+has 50 passing methods; the seven selected mutations are caught. Logs 10/11 compare
+49 identical tests across the rename. No coverage percentage is asserted.
 
-The final pricing follows the supplied rules: the student discount starts at
-$50, half cents round upward, standard delivery uses the total after discount,
-and express always costs $12. Orders check stock before saving. Cancelling an
-already cancelled order does not restore stock again.
+The CR record recovers a real earlier planning note and test-before-code history.
+It does not invent a separate pre-change worksheet. The original note names
+interfaces and test intentions, rather than a full list of file paths.
 
-All 49 test methods pass. The seven selected wrong changes are caught in separate
-copies. PDFs were rendered and checked for readable text and page breaks.
+Task 6 uses three actual final-review suggestions with ACCEPT, MODIFY and REJECT,
+code/test evidence, and an interaction excerpt supplied in the submission files.
+The record is identified as final-review material rather than earlier advice.
 
-## Documents and repository
+The original independent Checkpoint A text is still unavailable. Its submission
+was confirmed in the chat, but this review does not attest to its actual content.
+No independent human review or missing historical document is fabricated.
 
-The report is three pages. The testing record and separate AI evaluation are one
-page each. The AI evaluation contains the brief provenance note and explains
-which suggestions were used, adapted or rejected.
-
-Repository: https://github.com/McMerger/COMP3415-A2-Campus-Supply-Desk
-
-The repository is public, on main. Assignment commits use Mailles Machiana as
-author and committer. The instructor starter keeps its original author.
-
-The submission folder contains the report, testing record, repository link and
-an evidence ZIP. Source and Git-history backups are kept separately. D2L has not
-been submitted. The reconstructed handout remains unofficial supporting material.
+The source, tests, report and records are published together. PDFs were rendered
+for visual inspection. The packager verifies saved source hashes and tests a
+fresh local clone from the Git bundle. D2L submission remains unperformed.

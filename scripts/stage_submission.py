@@ -5,6 +5,7 @@ Requires Git and Python; does not contact GitHub or D2L. Run after committing.
 
 import hashlib
 import json
+import re
 from pathlib import Path
 import shutil
 import subprocess
@@ -34,16 +35,17 @@ def main():
         "output/pdf/Testing-Record.pdf": "02-Testing-Record.pdf",
         "output/pdf/AI-Evaluation.pdf": "supporting/AI-Evaluation.pdf",
         "output/pdf/GitHub-Link.pdf": "03-GitHub-Link.pdf",
+        "docs/ai-interactions.md": "05-AI-Use-Record.md",
+        "docs/cr01-notes.md": "supporting/CR-01-Planning-Record.md",
         "docs/final-local-review.md": "supporting/Local-Review.md",
         "docs/ai-review.md": "supporting/AI-Evaluation.md",
-        "output/pdf/A2-Reconstructed-Handout-UNOFFICIAL.pdf": "supporting/Unofficial-Reconstructed-Handout.pdf",
         "output/Campus-Supply-Desk-A2-local-review.zip": "Campus-Supply-Desk-Source.zip",
     }
     for source, destination in files.items():
         target = STAGE / destination
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(ROOT / source, target)
-    for obsolete in ("04-Local-Review.md", "05-AI-Evaluation.md"):
+    for obsolete in ("04-Local-Review.md", "05-AI-Evaluation.md", "supporting/Unofficial-Reconstructed-Handout.pdf"):
         old_copy = STAGE / obsolete
         if old_copy.exists():
             old_copy.unlink()
@@ -59,10 +61,10 @@ def main():
     (STAGE / "READ-ME-FIRST.txt").write_text(
         "Assignment 2 submission files\n\n"
         "The submit-to-d2l folder has the report, testing record, repository link\n"
-        "and evidence ZIP. Those are the final-submission files.\n"
-        "The separate AI note is under supporting; the report already includes it.\n"
+        "and evidence ZIP, plus the required 05-AI-Use-Record.md.\n"
+        "The report answers Tasks 1-6. The separate AI summary is under supporting.\n"
         "Other files here are backups, not extra report requirements.\n"
-        "The reconstructed handout is unofficial. Keep Checkpoint A separate.\n\n"
+        "The original handout has now been checked. Keep Checkpoint A separate.\n\n"
         "Restore the backup Git history with:\n"
         f"git clone -b {BRANCH} Campus-Supply-Desk.bundle Campus-Supply-Desk\n"
         "Then run: python -m unittest discover -s tests -v\n\n"
@@ -70,7 +72,7 @@ def main():
         encoding="utf-8")
     upload = STAGE / "submit-to-d2l"
     upload.mkdir(exist_ok=True)
-    for name in ("01-Assignment-Report.pdf", "02-Testing-Record.pdf", "03-GitHub-Link.pdf", "03-GitHub-Link.txt"):
+    for name in ("01-Assignment-Report.pdf", "02-Testing-Record.pdf", "03-GitHub-Link.pdf", "03-GitHub-Link.txt", "05-AI-Use-Record.md"):
         shutil.copyfile(STAGE / name, upload / name)
     with ZipFile(upload / "04-Test-Evidence.zip", "w", ZIP_DEFLATED) as archive:
         for path in sorted((STAGE / "evidence").rglob("*")):
@@ -98,6 +100,10 @@ def main():
         (STAGE / "06-Offline-Restore-Verification.txt").write_text(log, encoding="utf-8")
         if result.returncode:
             raise RuntimeError("Restored checkout tests failed; see verification log.")
+        count = re.search(r"Ran (\d+) tests", result.stdout + result.stderr)
+        if not count:
+            raise RuntimeError("Cannot determine restored test count.")
+        test_count = int(count[1])
     paths = sorted(p for p in STAGE.rglob("*") if p.is_file() and p.name != "SHA256SUMS.json")
     hashes = {p.relative_to(STAGE).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest() for p in paths}
     (STAGE / "SHA256SUMS.json").write_text(json.dumps(hashes, indent=2) + "\n", encoding="utf-8")
@@ -117,7 +123,7 @@ def main():
         for path in sorted(upload.iterdir()):
             if path.is_file():
                 archive.write(path, path.name)
-    print("Offline restore: 49 test methods passed; archive checksums verified.")
+    print(f"Offline restore: {test_count} test methods passed; archive checksums verified.")
     print(output)
     print(upload_zip)
 

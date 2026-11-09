@@ -1,39 +1,32 @@
-# Notes on the AI suggestions
+# AI decision notes
 
 Mailles Machiana / COMP3415 A2
 
-AI assistance was used for tests, implementation and writing after Checkpoint A. The shared-builder suggestion came up during implementation;
-the other options were considered when writing this evaluation.
+AI assistance was used after Checkpoint A. These three suggestions were evaluated
+during final review. The actual interaction excerpt and evidence are in
+`docs/ai-interactions.md`, supplied as the AI-use record.
 
-## Sharing the calculations - useful
+## ACCEPT - test the $50 express order from start to finish
 
-Quote and place had almost the same code. `_build_quote` removes that repetition
-and uses the state already loaded by the caller. The refactor kept the same
-failures before the bugs were fixed. Tests also compare quote and order prices.
+Added a test that quotes and places two bags for a student using express, then
+reopens, cancels twice and places another order. Expected amounts are
+5000/500/1200/5700 cents. Stock is restored once and the next ID is ORD-0002.
+Commit c5f1bb5 adds the case. It passes; the full suite now has 50 tests.
 
-## Dictionary lookup - useful in some places
+## MODIFY - use dictionary lookup everywhere
 
-It works for stock changes with validated IDs. Raw IDs are different: a list or
-dictionary can cause TypeError, when the service should raise ValueError.
-Keeping the small validation scan was fine for five products. This wasn't a
-measured speed improvement.
+Keep indexing for validated stock updates, but keep the small scan for raw
+product IDs. Otherwise list/dict IDs can cause TypeError instead of ValueError.
+The existing validation tests check those inputs without saved changes. This
+review retains that split; it isn't presented as a new change to earlier code.
 
-## round() for the discount - doesn't fit the rule
+## REJECT - calculate discounts with round(subtotal * 0.1)
 
-Python rounds ties to even. The spec wants half cents rounded up, so the integer
-formula stayed. A 5005-cent fixture needs a 501-cent discount and checks that case.
+At 5005 cents the proposed expression gives 500, while the required half-up
+result is 501. The actual comparison is saved in evidence/12-rounding-comparison.txt.
+The integer formula stays, the 501-cent fixture passes and the downward-rounding
+mutation is caught. The rejected formula wasn't put into production.
 
-## Reusing free delivery for express - wrong result
-
-CR-01 says express always costs $12. Reusing standard delivery's threshold would
-waive it on bigger orders. A separate branch keeps the rule clear. Tests check
-that the fee isn't waived or discounted.
-
-## Bigger changes - not needed here
-
-A database and delivery classes would add work without solving another required
-problem. JSON and a short conditional were enough. Duplicate lines stay separate;
-only the stock check adds their quantities together.
-
-The 49 passing tests and seven caught wrong changes support these decisions.
-They don't mean there can't be another bug.
+These are three different decisions. The report explains the code and tests
+behind them; the AI-use record provides the interaction rather than just a list
+of unsupported claims about what was suggested.
