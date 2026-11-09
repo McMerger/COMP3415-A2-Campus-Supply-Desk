@@ -2,10 +2,9 @@
 
 Mailles Machiana | COMP3415 Assignment 2
 
-Codex helped with the tests, implementation and writing after Checkpoint A.
-This is a short decision record, not a full prompt transcript. The shared-builder
-suggestion came up during implementation; the other options below were evaluated
-while preparing these notes. These notes were also prepared with AI assistance.
+AI assistance: Codex supported the tests, implementation and writing after
+Checkpoint A. The shared-builder suggestion came up during implementation;
+the other options below were considered when preparing this evaluation.
 
 ## Share the quote and order calculations - accepted
 

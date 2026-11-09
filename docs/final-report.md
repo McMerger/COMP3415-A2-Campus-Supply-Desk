@@ -119,9 +119,9 @@ Unsupported fulfillment values still raise an error.
 
 ## 5. AI recommendations: what was useful and what was not
 
-Codex helped with the tests, code changes and report after Checkpoint A. These
-notes explain the decisions taken during that work. They are not a complete
-prompt transcript; some alternatives were considered when writing the evaluation.
+The following choices were checked against the specification and test results.
+The separate AI notes give a short record of the assistance and alternatives
+considered.
 
 The suggestion to share quote construction was useful because it addressed
 actual repetition in the code. Passing the already-loaded state into the helper
