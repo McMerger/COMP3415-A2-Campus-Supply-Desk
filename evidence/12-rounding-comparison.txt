@@ -1,0 +1,2 @@
+Floating-point alternative: 500
+Required half-up result: 501

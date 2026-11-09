@@ -1,6 +1,7 @@
 test_client_examples_quote_and_place (test_express.ExpressTests.test_client_examples_quote_and_place) ... ok
 test_delivery_fee_does_not_make_merchandise_discount_eligible (test_express.ExpressTests.test_delivery_fee_does_not_make_merchandise_discount_eligible) ... ok
 test_discount_at_exact_threshold_excludes_express_fee (test_express.ExpressTests.test_discount_at_exact_threshold_excludes_express_fee) ... ok
+test_exact_discount_threshold_round_trip (test_express.ExpressTests.test_exact_discount_threshold_round_trip) ... ok
 test_express_fee_not_waived_above_discounted_threshold (test_express.ExpressTests.test_express_fee_not_waived_above_discounted_threshold) ... ok
 test_express_rejects_invalid_stock_quantity_and_customer (test_express.ExpressTests.test_express_rejects_invalid_stock_quantity_and_customer) ... ok
 test_express_snapshot_persists_through_reopen_and_cancel (test_express.ExpressTests.test_express_snapshot_persists_through_reopen_and_cancel) ... ok
@@ -49,6 +50,6 @@ test_invalid_requests_do_not_modify_existing_state (test_validation.ValidationTe
 test_quantity_upper_boundary_99_with_stock_fixture (test_validation.ValidationTests.test_quantity_upper_boundary_99_with_stock_fixture) ... ok
 
 ----------------------------------------------------------------------
-Ran 49 tests in 3.263s
+Ran 50 tests in 2.608s
 
 OK

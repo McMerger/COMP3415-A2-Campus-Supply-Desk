@@ -5,6 +5,25 @@ from supplydesk.service import OrderService
 
 
 class ExpressTests(ServiceTestCase):
+    def test_exact_discount_threshold_round_trip(self):
+        request = ("student", [item("bag", 2)], "express")
+        quote = self.service.quote(*request)
+        order = self.service.place_order(*request)
+        self.assertEqual((order["subtotal_cents"], order["discount_cents"],
+                          order["delivery_cents"], order["total_cents"]),
+                         (5000, 500, 1200, 5700))
+        self.assertEqual({key: order[key] for key in quote}, quote)
+        reopened = OrderService(self.path)
+        self.assertEqual(reopened.get_order("ORD-0001"), order)
+        self.assertEqual(self.stock("bag"), 2)
+        cancelled = reopened.cancel_order("ORD-0001")
+        self.assertEqual(cancelled, {**order, "status": "cancelled"})
+        self.assertEqual(self.stock("bag"), 4)
+        before = self.path.read_bytes()
+        self.assertEqual(OrderService(self.path).cancel_order("ORD-0001"), cancelled)
+        self.assertEqual(self.path.read_bytes(), before)
+        self.assertEqual(reopened.place_order("regular", [item()])["order_id"], "ORD-0002")
+
     def test_client_examples_quote_and_place(self):
         cases = [
             ("regular", [item(quantity=2)], 0, 2200),
