@@ -94,5 +94,7 @@ EOF and Ctrl+C are simulated exceptions. File permission errors are simulated
 to remain reliable across Windows permission configurations. Save crashes,
 multiple writers, arbitrary manual edits and schema migration are outside
 scope. The full assignment handout is unavailable, so exact evidence-format
-and grading requirements still need comparison. Nothing has been submitted
-to D2L or pushed to GitHub.
+and grading requirements still need comparison. Tests were developed locally;
+the completed work is now published with approval at
+https://github.com/McMerger/COMP3415-A2-Campus-Supply-Desk. Nothing has been
+submitted to D2L.

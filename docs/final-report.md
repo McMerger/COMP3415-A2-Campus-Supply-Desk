@@ -3,7 +3,8 @@
 
 Prepared November 8, 2026. This report covers post-Checkpoint-A testing,
 refactoring, defect correction and CR-01 express delivery. Work is local on
-branch `assignment-a2/local-improvements`. No push or D2L submission has occurred.
+branch `assignment-a2/local-improvements`, published to `main` in the student's
+own GitHub repository with explicit approval. No D2L submission has occurred.
 
 ### Result
 
@@ -30,8 +31,10 @@ must review its analysis and conclusions before submission.
 The complete Assignment 2 handout was not supplied. Therefore this review copy
 cannot certify compliance with unprovided report formatting, grading criteria,
 minimum test counts or required AI transcript formats. The separate supplied
-CR-01 was available and is implemented. The repository link for the student's
-own hosted repository remains pending the user's explicit push approval.
+CR-01 was available and is implemented. Student-owned repository:
+https://github.com/McMerger/COMP3415-A2-Campus-Supply-Desk
+The repository is private; grader access must be arranged according to course
+instructions.
 
 ### Sources and provenance
 
@@ -369,11 +372,12 @@ save files, preserving ordinary local application data.
 
 ### Remaining submission steps
 
-The user's explicit approval is required before pushing anything. A student-owned
-GitHub repository has not been created or published. The existing origin points
-to the instructor's starter; it must not be used as the destination for the
-student submission. After approval, create/use the student's own repository and
-publish the reviewed branch/history there, then record that actual repository URL.
+The student-owned repository has been created and published with explicit user
+approval at https://github.com/McMerger/COMP3415-A2-Campus-Supply-Desk on `main`.
+It is private. The instructor starter is retained as `upstream`; `origin` points
+to the student's repository. Assignment commits use Mailles Machiana as author
+and committer and are linked to GitHub account McMerger. No AI co-author trailers
+were added. The instructor's original starter commit retains its original author.
 
 The full handout must still be checked for report format, identity fields,
 required AI records and grading criteria. The student's Checkpoint A remains a
@@ -381,5 +385,5 @@ separate prior submission. No evidence of its timestamp or submission interval
 was available to inspect, and none is asserted here beyond the user's confirmation.
 
 Submit the reviewed final PDF, own repository link and testing evidence record
-through the final A2 D2L folder. No D2L submission or remote push was performed
-during this local implementation.
+through the final A2 D2L folder. Ensure the grader can access the private
+repository. No D2L submission was performed.

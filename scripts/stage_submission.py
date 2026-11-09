@@ -41,23 +41,28 @@ def main():
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(ROOT / source, target)
     shutil.copytree(ROOT / "evidence", STAGE / "evidence", dirs_exist_ok=True)
-    (STAGE / "03-GitHub-Link-PENDING.txt").write_text(
-        "Status: not published. No live student-owned GitHub URL exists yet.\n"
-        "Do not submit the instructor's repository URL as your own.\n"
-        "Replace this note with the actual URL after explicit publication approval.\n"
-        "The local history bundle preserves the work but is not a live GitHub link.\n",
+    pending = STAGE / "03-GitHub-Link-PENDING.txt"
+    if pending.exists():
+        pending.unlink()
+    (STAGE / "03-GitHub-Link.txt").write_text(
+        "https://github.com/McMerger/COMP3415-A2-Campus-Supply-Desk\n\n"
+        "Owner: McMerger (Mailles Machiana). Branch: main. Visibility: private.\n"
+        "Created and published with the user's explicit approval.\n"
+        "Ensure the grader can access this private repository before submission.\n"
+        "Assignment commits use the user's identity without AI co-author attribution.\n"
+        "The instructor starter commit retains its original author.\n",
         encoding="utf-8")
     (STAGE / "READ-ME-FIRST.txt").write_text(
-        "LOCAL SUBMISSION STAGING - NOT UPLOADED\n\n"
+        "D2L SUBMISSION STAGING - NOT UPLOADED TO D2L\n\n"
         "Primary files: 01-Assignment-Report.pdf, 02-Testing-Evidence.md and evidence/.\n"
-        "03-GitHub-Link-PENDING.txt must be replaced after approved publication.\n"
+        "03-GitHub-Link.txt contains the actual published private repository URL.\n"
         "04-Local-Review.md and 05-AI-Evaluation.md record the AI-assisted review.\n"
         "The reconstructed handout is unofficial supporting material.\n"
         "The original handout's exact upload requirements remain unknown.\n\n"
         "Restore offline history with:\n"
         f"git clone -b {BRANCH} Campus-Supply-Desk.bundle Campus-Supply-Desk\n"
         "Then run: python -m unittest discover -s tests -v\n\n"
-        "No GitHub push or D2L submission has been performed.\n",
+        "GitHub publication is complete. D2L submission has not been performed.\n",
         encoding="utf-8")
     bundle = STAGE / "Campus-Supply-Desk.bundle"
     git("bundle", "create", str(bundle), BRANCH)

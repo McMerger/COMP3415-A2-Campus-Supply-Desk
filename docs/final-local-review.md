@@ -1,5 +1,13 @@
 # Final local review
 
+Publication update: following this local review, the user explicitly authorized
+creation and publication of their own GitHub repository. It is now available
+at https://github.com/McMerger/COMP3415-A2-Campus-Supply-Desk (private, branch
+`main`). Assignment commits are authored/committed as Mailles Machiana and
+linked on GitHub to McMerger, without AI co-author trailers. The original
+instructor commit keeps its original attribution. The remainder of this review
+records the earlier local-only state; D2L submission remains unperformed.
+
 Reviewed November 8, 2026 by Codex at the user's request. This is an additional
 AI-assisted review of source, tests, report and AI evaluation. It does not
 represent the student's personal assessment or approval to publish online.

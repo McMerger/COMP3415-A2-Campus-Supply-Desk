@@ -1,8 +1,10 @@
 # Local review handoff
 
 This checkout contains post-Checkpoint-A work for Campus Supply Desk. All
-changes are local on `assignment-a2/local-improvements`. Do not push to the
-instructor repository. The user has requested approval before any push.
+changes are on `assignment-a2/local-improvements`, published with the user's
+approval to `main` at https://github.com/McMerger/COMP3415-A2-Campus-Supply-Desk.
+The repository is private. The instructor repository is retained as `upstream`;
+do not push assignment changes there.
 
 ## Start here
 
@@ -19,8 +21,9 @@ instructor repository. The user has requested approval before any push.
 - Review the AI-assisted analysis and add the student's own critical assessment
   and any required identity fields or AI-use disclosures/transcripts.
 - Keep Checkpoint A separate; its contents were not regenerated here.
-- Obtain the user's explicit approval before creating/publishing a student-owned
-  remote repository. Record its actual URL in the final report after publication.
+- Repository creation and push were explicitly approved and completed. The
+  actual URL is included in the report and staged link file. Ensure grader
+  access to the private repository before submission.
 - Submit the reviewed PDF, repository link and evidence to the final A2 D2L
   folder. No submission action has occurred.
 

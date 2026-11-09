@@ -1,5 +1,12 @@
 # Campus Supply Desk
 
+Student submission repository:
+[McMerger/COMP3415-A2-Campus-Supply-Desk](https://github.com/McMerger/COMP3415-A2-Campus-Supply-Desk)
+(private, `main`). The [PDF report](output/pdf/Campus-Supply-Desk-A2-Report.pdf),
+[testing evidence](docs/testing-evidence.md) and [AI evaluation](docs/ai-review.md)
+document the completed post-checkpoint work. The original instructor starter
+and its attribution remain in Git history.
+
 This program is intentionally imperfect. Your assignment is to understand, test, and improve it—not to rewrite it.
 
 **Before using generative AI, submit Checkpoint A as required by the assignment.**
