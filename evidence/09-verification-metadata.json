@@ -1,5 +1,5 @@
 {
-  "recorded_at_utc": "2026-11-09T02:23:04.087068+00:00",
+  "recorded_at_utc": "2026-11-09T03:55:42.574296+00:00",
   "python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
   "platform": "win32",
   "command": [
@@ -19,11 +19,11 @@
     "supplydesk/__main__.py": "6cca3aa9c6733377311a7110d664da933ec3d016aff47ae77e194b2823b04222",
     "supplydesk/cli.py": "b34fe9b9babdbfbd1b2f0841cf3483b429b39462c9a30ca97fb32de3aba34bf6",
     "supplydesk/menu.py": "83d15ebb1025f83eb576d3ae1a645bbafde5b5a8d7c1e8478e6cd4e2297b4ae8",
-    "supplydesk/service.py": "3bb8bb68a688f1e09a2f7956cdb88401c4f5059dda76f0f13eb01a8c476148c1",
+    "supplydesk/service.py": "417345ec4e6a29819912452279ff39030b1537ee77d1027413eedaea062c862e",
     "supplydesk/storage.py": "c04e95390bbf59a7cc8b816bde1a365bf540ee51e069a49c2c8199f107a0fad6",
     "tests/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "tests/support.py": "9fc0b5f953b6ddf01a230c760e74cacd9d29ba8e811bd3b4420fc5846c9f5204",
-    "tests/test_express.py": "bc8e5e0f9798d8f22f504e18582894858eca80c5b5f37bbad6286803175f40e4",
+    "tests/test_express.py": "6c2729b61dcc66c8b31183c28cb516ff82010eeb6a1c548fdcae22de9df9af77",
     "tests/test_interfaces.py": "9ed7358a88ef12865d6235f0a082c97a3b9dc9d9dda92a0ab39234953257c107",
     "tests/test_lifecycle.py": "7bd8e579c329176b9acf91f18b005f2de749b930c105ac919e44befe9f618de0",
     "tests/test_pricing.py": "28b2a01a12453d87b1087540ae2d7e244da6473c4020453ab9b5e542464cabdd",

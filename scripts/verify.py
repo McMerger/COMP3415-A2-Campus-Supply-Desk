@@ -41,7 +41,7 @@ MUTATIONS = [
      'subtotal_cents * STUDENT_DISCOUNT_PERCENT + 50', 'subtotal_cents * STUDENT_DISCOUNT_PERCENT + 49',
      "tests.test_pricing"),
     ("cli_express_choice_removed", "supplydesk/cli.py",
-     'choices=("pickup", "delivery_cents", "express")', 'choices=("pickup", "delivery_cents")',
+     'choices=("pickup", "delivery", "express")', 'choices=("pickup", "delivery")',
      "tests.test_interfaces.CommandTests"),
 ]
 
