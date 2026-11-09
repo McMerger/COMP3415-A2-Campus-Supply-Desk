@@ -2,8 +2,7 @@
 
 Mailles Machiana / COMP3415 A2
 
-AI assistance: Codex helped with tests, implementation and writing after
-Checkpoint A. The shared-builder suggestion came up during implementation;
+AI assistance was used for tests, implementation and writing after Checkpoint A. The shared-builder suggestion came up during implementation;
 the other options were considered when writing this evaluation.
 
 ## Sharing the calculations - useful
