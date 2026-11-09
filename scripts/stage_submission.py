@@ -33,6 +33,7 @@ def main():
         "docs/testing-evidence.md": "02-Testing-Evidence.md",
         "output/pdf/Testing-Record.pdf": "02-Testing-Record.pdf",
         "output/pdf/AI-Evaluation.pdf": "supporting/AI-Evaluation.pdf",
+        "output/pdf/GitHub-Link.pdf": "03-GitHub-Link.pdf",
         "docs/final-local-review.md": "supporting/Local-Review.md",
         "docs/ai-review.md": "supporting/AI-Evaluation.md",
         "output/pdf/A2-Reconstructed-Handout-UNOFFICIAL.pdf": "supporting/Unofficial-Reconstructed-Handout.pdf",
@@ -69,7 +70,7 @@ def main():
         encoding="utf-8")
     upload = STAGE / "submit-to-d2l"
     upload.mkdir(exist_ok=True)
-    for name in ("01-Assignment-Report.pdf", "02-Testing-Record.pdf", "03-GitHub-Link.txt"):
+    for name in ("01-Assignment-Report.pdf", "02-Testing-Record.pdf", "03-GitHub-Link.pdf", "03-GitHub-Link.txt"):
         shutil.copyfile(STAGE / name, upload / name)
     with ZipFile(upload / "04-Test-Evidence.zip", "w", ZIP_DEFLATED) as archive:
         for path in sorted((STAGE / "evidence").rglob("*")):

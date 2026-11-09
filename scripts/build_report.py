@@ -23,6 +23,8 @@ INLINE_SIZE = 8
 
 def inline(text):
     text = escape(text)
+    text = re.sub(r"https?://[^\s<]+", lambda match:
+                  f'<link href="{match[0]}">{match[0]}</link>', text)
     return re.sub(r"`([^`]+)`", lambda match:
                   f'<font name="{INLINE_FONT}" size="{INLINE_SIZE}">{match[1]}</font>', text)
 
