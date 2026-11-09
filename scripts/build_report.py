@@ -22,7 +22,11 @@ def inline(text):
     return re.sub(r"`([^`]+)`", r'<font name="Courier" size="8">\1</font>', text)
 
 
-def main():
+def main(source_path=None, output_path=None,
+         title="Campus Supply Desk - A2 local review report",
+         footer="Local review copy  |  AI-assisted  |  November 8, 2026"):
+    source_path = Path(source_path) if source_path else ROOT / "docs" / "final-report.md"
+    output_path = Path(output_path) if output_path else OUTPUT
     styles = getSampleStyleSheet()
     styles.add(ParagraphStyle("BodyReport", fontName="Helvetica", fontSize=10,
                              leading=14, spaceAfter=9, textColor=colors.HexColor("#253145")))
@@ -42,7 +46,7 @@ def main():
         styles[name].textColor = colors.HexColor("#153C58")
         styles[name].spaceBefore = 10
         styles[name].spaceAfter = 8
-    source = (ROOT / "docs" / "final-report.md").read_text(encoding="utf-8")
+    source = source_path.read_text(encoding="utf-8")
     # Use predictable glyphs in the PDF's built-in fonts.
     source = source.replace("\u2014", " - ").replace("\u2013", "-").replace("\u2019", "'")
     lines = source.splitlines()
@@ -115,18 +119,25 @@ def main():
         canvas.setFont("Helvetica", 8)
         canvas.setFillColor(colors.HexColor("#4B6475"))
         canvas.drawString(54, 760, "COMP3415  /  CAMPUS SUPPLY DESK")
-        canvas.drawString(54, 29, "Local review copy  |  AI-assisted  |  November 8, 2026")
+        canvas.drawString(54, 29, footer)
         canvas.drawRightString(558, 29, str(doc.page))
         canvas.restoreState()
 
-    OUTPUT.parent.mkdir(parents=True, exist_ok=True)
-    doc = SimpleDocTemplate(str(OUTPUT), pagesize=(612, 792),
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    doc = SimpleDocTemplate(str(output_path), pagesize=(612, 792),
                             rightMargin=54, leftMargin=54, topMargin=56,
-                            bottomMargin=48, title="Campus Supply Desk - A2 local review report",
+                            bottomMargin=48, title=title,
                             author="AI-assisted local project report")
     doc.build(flow, onFirstPage=decorate, onLaterPages=decorate)
-    print(OUTPUT)
+    print(output_path)
 
 
 if __name__ == "__main__":
-    main()
+    import argparse
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--source", type=Path)
+    parser.add_argument("--output", type=Path)
+    parser.add_argument("--title", default="Campus Supply Desk - A2 local review report")
+    parser.add_argument("--footer", default="Local review copy  |  AI-assisted  |  November 8, 2026")
+    args = parser.parse_args()
+    main(args.source, args.output, args.title, args.footer)
