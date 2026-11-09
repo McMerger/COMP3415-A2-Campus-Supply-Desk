@@ -71,6 +71,12 @@ at stock capacity is placed, preserved as two lines and restored by cancelling.
 
 ## Limits of this evaluation
 
+Record provenance: R1 describes the shared-builder recommendation made during
+implementation. R2-R6 document design alternatives evaluated by the AI while
+preparing this decision record; they are not attributed to an earlier model
+response or an unavailable prompt transcript. The options and their critiques
+must not be presented as independent human recommendations or human review.
+
 Passing tests and seven detected hand-selected mutations support specific
 claims; they do not prove exhaustive correctness. The report and critique were
 generated with AI assistance and have not yet been independently reviewed by

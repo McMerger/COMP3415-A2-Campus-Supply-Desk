@@ -7,3 +7,4 @@ __pycache__/
 htmlcov/
 tmp/
 output/*.zip
+output/submission/
