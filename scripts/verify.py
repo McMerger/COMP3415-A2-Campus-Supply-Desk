@@ -22,7 +22,7 @@ COMMAND = [sys.executable, "-m", "unittest", "discover", "-s", "tests", "-v"]
 # A mutation is detected only if its isolated tests fail (no syntax errors).
 MUTATIONS = [
     ("discount_excludes_50_dollars", "supplydesk/service.py",
-     "subtotal >= STUDENT_DISCOUNT_THRESHOLD_CENTS", "subtotal > STUDENT_DISCOUNT_THRESHOLD_CENTS",
+     "subtotal_cents >= STUDENT_DISCOUNT_THRESHOLD_CENTS", "subtotal_cents > STUDENT_DISCOUNT_THRESHOLD_CENTS",
      "tests.test_pricing"),
     ("duplicate_stock_checked_per_line", "supplydesk/service.py",
      'if requested_quantities[product_id] > product["stock"]:', 'if quantity > product["stock"]:',
@@ -31,17 +31,17 @@ MUTATIONS = [
      'if order["status"] == "cancelled":', 'if False:', "tests.test_lifecycle"),
     ("express_fee_waived_at_100_dollars", "supplydesk/service.py",
      'elif fulfillment == "express":',
-     'elif fulfillment == "express" and subtotal - discount < FREE_DELIVERY_THRESHOLD_CENTS:',
+     'elif fulfillment == "express" and subtotal_cents - discount_cents < FREE_DELIVERY_THRESHOLD_CENTS:',
      "tests.test_express"),
     ("express_fee_discounted", "supplydesk/service.py",
-     'delivery = EXPRESS_DELIVERY_CENTS',
-     'delivery = EXPRESS_DELIVERY_CENTS * (90 if customer_type == "student" else 100) // 100',
+     'delivery_cents = EXPRESS_DELIVERY_CENTS',
+     'delivery_cents = EXPRESS_DELIVERY_CENTS * (90 if customer_type == "student" else 100) // 100',
      "tests.test_express"),
     ("discount_rounds_half_cent_down", "supplydesk/service.py",
-     'subtotal * STUDENT_DISCOUNT_PERCENT + 50', 'subtotal * STUDENT_DISCOUNT_PERCENT + 49',
+     'subtotal_cents * STUDENT_DISCOUNT_PERCENT + 50', 'subtotal_cents * STUDENT_DISCOUNT_PERCENT + 49',
      "tests.test_pricing"),
     ("cli_express_choice_removed", "supplydesk/cli.py",
-     'choices=("pickup", "delivery", "express")', 'choices=("pickup", "delivery")',
+     'choices=("pickup", "delivery_cents", "express")', 'choices=("pickup", "delivery_cents")',
      "tests.test_interfaces.CommandTests"),
 ]
 

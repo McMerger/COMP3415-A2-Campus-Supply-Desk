@@ -29,7 +29,7 @@ class OrderService:
         if not isinstance(items, list) or not items:
             raise ValueError("An order must contain at least one item.")
         lines = []
-        subtotal = 0
+        subtotal_cents = 0
         requested_quantities = {}
         for item in items:
             if not isinstance(item, dict):
@@ -48,31 +48,31 @@ class OrderService:
             requested_quantities[product_id] = requested_quantities.get(product_id, 0) + quantity
             if requested_quantities[product_id] > product["stock"]:
                 raise ValueError("Not enough stock for " + product["product_id"] + ".")
-            line_total = product["unit_price_cents"] * quantity
-            subtotal += line_total
+            line_total_cents = product["unit_price_cents"] * quantity
+            subtotal_cents += line_total_cents
             lines.append({
                 "product_id": product["product_id"],
                 "name": product["name"],
                 "unit_price_cents": product["unit_price_cents"],
                 "quantity": quantity,
-                "line_total_cents": line_total,
+                "line_total_cents": line_total_cents,
             })
-        discount = 0
-        if customer_type == "student" and subtotal >= STUDENT_DISCOUNT_THRESHOLD_CENTS:
-            discount = (subtotal * STUDENT_DISCOUNT_PERCENT + 50) // 100
-        delivery = 0
-        if fulfillment == "delivery" and subtotal - discount < FREE_DELIVERY_THRESHOLD_CENTS:
-            delivery = STANDARD_DELIVERY_CENTS
+        discount_cents = 0
+        if customer_type == "student" and subtotal_cents >= STUDENT_DISCOUNT_THRESHOLD_CENTS:
+            discount_cents = (subtotal_cents * STUDENT_DISCOUNT_PERCENT + 50) // 100
+        delivery_cents = 0
+        if fulfillment == "delivery" and subtotal_cents - discount_cents < FREE_DELIVERY_THRESHOLD_CENTS:
+            delivery_cents = STANDARD_DELIVERY_CENTS
         elif fulfillment == "express":
-            delivery = EXPRESS_DELIVERY_CENTS
+            delivery_cents = EXPRESS_DELIVERY_CENTS
         return {
             "customer_type": customer_type,
             "fulfillment": fulfillment,
             "items": lines,
-            "subtotal_cents": subtotal,
-            "discount_cents": discount,
-            "delivery_cents": delivery,
-            "total_cents": subtotal - discount + delivery,
+            "subtotal_cents": subtotal_cents,
+            "discount_cents": discount_cents,
+            "delivery_cents": delivery_cents,
+            "total_cents": subtotal_cents - discount_cents + delivery_cents,
         }
 
     def place_order(self, customer_type, items, fulfillment="pickup"):
