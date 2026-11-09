@@ -30,6 +30,9 @@ instructor repository. The user has requested approval before any push.
 at the packaging commit, including the PDF, source, tests and evidence. It
 excludes `.git`, temporary PDF images, runtime data and the ZIP itself. Use
 the original local checkout to inspect the actual development commit history.
+Recreate it from a clean checkout with `python scripts/package_review.py`.
+The packager preserves working-file bytes and validates all recorded source
+hashes and the archived PDF against the reviewed original.
 
 ## Report rendering
 
