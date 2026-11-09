@@ -7,6 +7,9 @@ Repo: https://github.com/McMerger/COMP3415-A2-Campus-Supply-Desk
 
 ## Report and notes
 
+[Download the submission files](output/Campus-Supply-Desk-A2-submit-to-d2l.zip).
+This ZIP has the report, testing notes, repository link, test evidence and AI-use record.
+
 - [Report](output/pdf/Campus-Supply-Desk-A2-Report.pdf)
 - [Testing notes](output/pdf/Testing-Record.pdf)
 - [AI suggestion notes](output/pdf/AI-Evaluation.pdf)

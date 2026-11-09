@@ -7,4 +7,5 @@ __pycache__/
 htmlcov/
 tmp/
 output/*.zip
+!output/Campus-Supply-Desk-A2-submit-to-d2l.zip
 output/submission/
