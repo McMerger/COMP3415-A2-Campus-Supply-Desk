@@ -17,6 +17,8 @@ class ValidationTests(ServiceTestCase):
             ("regular", [None], "pickup"),
             ("regular", [{}], "pickup"),
             ("regular", [item("unknown")], "pickup"),
+            ("regular", [item([])], "pickup"),
+            ("regular", [item({})], "pickup"),
             ("regular", [{"product_id": "notebook"}], "pickup"),
             ("regular", [{"quantity": 1}], "pickup"),
         ]
