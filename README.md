@@ -87,6 +87,23 @@ With sufficient stock available, the quote should show a **$10.00 total**.
 
 No order has been placed. To purchase items, choose **3 — Place an order** from the menu and follow the prompts.
 
+### CR-01: Express delivery
+
+Choose `express` at the menu fulfillment prompt, or use `--fulfillment express`
+with `quote` or `place`. Express always adds CAD $12.00 (1,200 cents), including
+orders that qualify for free standard delivery. The student discount applies
+only to merchandise. Defaults remain `regular` and `pickup`.
+
+```sh
+python -m supplydesk quote --customer student --fulfillment express --item hoodie:2
+```
+
+This quote totals 8,400 cents ($84.00 CAD): $80.00 merchandise, minus $8.00
+student discount, plus $12.00 express delivery. Standard `delivery` remains
+$6.00, waived at a merchandise total of at least $100.00 after discount;
+`pickup` remains free. Express fulfillment and original prices remain saved
+when orders are reopened or cancelled. See [CR-01](docs/CR-01.md).
+
 ## 3. Running the tests
 
 From the folder containing `README.md`, `supplydesk`, and `tests`, run:
@@ -95,15 +112,20 @@ From the folder containing `README.md`, `supplydesk`, and `tests`, run:
 python -m unittest discover -s tests -v
 ```
 
-The supplied tests should finish with:
+The original four starter tests are retained. With the added regression and
+CR-01 acceptance tests, the full suite should finish with:
 
 ```text
-Ran 4 tests
+Ran 49 tests
 
 OK
 ```
 
-These four tests are a starting point. **Passing them does not mean every required behavior is correct.** You will add meaningful tests as part of the assignment.
+The tests cover pricing boundaries, validation, inventory, saved history,
+repeat cancellation, command processes, menu confirmations, and express
+delivery. See [testing evidence](docs/testing-evidence.md) and the
+[local report](docs/final-report.md). Passing tests establish the exercised
+cases, not correctness for every possible input.
 
 The supplied tests use temporary files and do not change your saved orders or stock.
 

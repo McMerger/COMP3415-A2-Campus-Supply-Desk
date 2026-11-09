@@ -1,0 +1,54 @@
+test_client_examples_quote_and_place (test_express.ExpressTests.test_client_examples_quote_and_place) ... ok
+test_delivery_fee_does_not_make_merchandise_discount_eligible (test_express.ExpressTests.test_delivery_fee_does_not_make_merchandise_discount_eligible) ... ok
+test_discount_at_exact_threshold_excludes_express_fee (test_express.ExpressTests.test_discount_at_exact_threshold_excludes_express_fee) ... ok
+test_express_fee_not_waived_above_discounted_threshold (test_express.ExpressTests.test_express_fee_not_waived_above_discounted_threshold) ... ok
+test_express_rejects_invalid_stock_quantity_and_customer (test_express.ExpressTests.test_express_rejects_invalid_stock_quantity_and_customer) ... ok
+test_express_snapshot_persists_through_reopen_and_cancel (test_express.ExpressTests.test_express_snapshot_persists_through_reopen_and_cancel) ... ok
+test_other_fulfillment_values_remain_invalid (test_express.ExpressTests.test_other_fulfillment_values_remain_invalid) ... ok
+test_standard_and_pickup_preserved_alongside_express (test_express.ExpressTests.test_standard_and_pickup_preserved_alongside_express) ... ok
+test_actual_module_opens_menu_and_exits (test_interfaces.CommandTests.test_actual_module_opens_menu_and_exits) ... ok
+test_cli_rejects_invalid_input_without_save (test_interfaces.CommandTests.test_cli_rejects_invalid_input_without_save) ... ok
+test_default_quote_json_and_no_save (test_interfaces.CommandTests.test_default_quote_json_and_no_save) ... ok
+test_express_is_discoverable_in_both_command_help_screens (test_interfaces.CommandTests.test_express_is_discoverable_in_both_command_help_screens) ... ok
+test_express_quote_from_client_example (test_interfaces.CommandTests.test_express_quote_from_client_example) ... ok
+test_immediate_express_place_history_show_and_repeated_cancel (test_interfaces.CommandTests.test_immediate_express_place_history_show_and_repeated_cancel) ... ok
+test_malformed_save_reports_error_without_reset (test_interfaces.CommandTests.test_malformed_save_reports_error_without_reset) ... ok
+test_confirmed_cancel_restores_stock (test_interfaces.MenuTests.test_confirmed_cancel_restores_stock) ... ok
+test_declining_cancel_preserves_save (test_interfaces.MenuTests.test_declining_cancel_preserves_save) ... ok
+test_declining_placement_leaves_no_save (test_interfaces.MenuTests.test_declining_placement_leaves_no_save) ... ok
+test_defaults_quote_and_retry_non_integer_quantity (test_interfaces.MenuTests.test_defaults_quote_and_retry_non_integer_quantity) ... ok
+test_eof_and_interrupt_exit_cleanly (test_interfaces.MenuTests.test_eof_and_interrupt_exit_cleanly) ... ok
+test_express_prompt_and_confirmed_order (test_interfaces.MenuTests.test_express_prompt_and_confirmed_order) ... ok
+test_invalid_request_returns_to_menu (test_interfaces.MenuTests.test_invalid_request_returns_to_menu) ... ok
+test_duplicate_lines_at_stock_limit_are_preserved_and_restored (test_lifecycle.LifecycleTests.test_duplicate_lines_at_stock_limit_are_preserved_and_restored) ... ok
+test_history_is_snapshot_after_catalog_price_change (test_lifecycle.LifecycleTests.test_history_is_snapshot_after_catalog_price_change) ... ok
+test_history_preserves_order_totals_status_and_numbering (test_lifecycle.LifecycleTests.test_history_preserves_order_totals_status_and_numbering) ... ok
+test_malformed_and_unreadable_save_are_not_reset (test_lifecycle.LifecycleTests.test_malformed_and_unreadable_save_are_not_reset) ... ok
+test_placement_rechecks_stock_after_quote (test_lifecycle.LifecycleTests.test_placement_rechecks_stock_after_quote) ... ok
+test_quote_and_catalog_do_not_create_save_or_consume_id (test_lifecycle.LifecycleTests.test_quote_and_catalog_do_not_create_save_or_consume_id) ... ok
+test_quote_and_placement_have_identical_pricing_and_items (test_lifecycle.LifecycleTests.test_quote_and_placement_have_identical_pricing_and_items) ... ok
+test_quote_does_not_modify_existing_save (test_lifecycle.LifecycleTests.test_quote_does_not_modify_existing_save) ... ok
+test_repeated_cancellation_is_idempotent_after_reopening (test_lifecycle.LifecycleTests.test_repeated_cancellation_is_idempotent_after_reopening) ... ok
+test_unknown_lookup_and_cancel_leave_saved_data_unchanged (test_lifecycle.LifecycleTests.test_unknown_lookup_and_cancel_leave_saved_data_unchanged) ... ok
+test_delivery_below_at_and_above_threshold (test_pricing.PricingTests.test_delivery_below_at_and_above_threshold) ... ok
+test_delivery_threshold_uses_discounted_subtotal (test_pricing.PricingTests.test_delivery_threshold_uses_discounted_subtotal) ... ok
+test_half_cent_discount_rounds_up_with_catalog_fixture (test_pricing.PricingTests.test_half_cent_discount_rounds_up_with_catalog_fixture) ... ok
+test_pickup_is_free_and_money_is_integer (test_pricing.PricingTests.test_pickup_is_free_and_money_is_integer) ... ok
+test_regular_has_no_discount_at_threshold (test_pricing.PricingTests.test_regular_has_no_discount_at_threshold) ... ok
+test_student_discount_at_threshold_for_both_operations (test_pricing.PricingTests.test_student_discount_at_threshold_for_both_operations) ... ok
+test_student_discount_below_threshold (test_pricing.PricingTests.test_student_discount_below_threshold) ... ok
+test_cancel_order_restores_stock (test_smoke.OrderSmokeTests.test_cancel_order_restores_stock) ... ok
+test_order_can_be_reopened (test_smoke.OrderSmokeTests.test_order_can_be_reopened) ... ok
+test_regular_pickup_quote (test_smoke.OrderSmokeTests.test_regular_pickup_quote) ... ok
+test_student_delivery_quote (test_smoke.OrderSmokeTests.test_student_delivery_quote) ... ok
+test_combined_duplicate_quantity_cannot_exceed_stock (test_validation.ValidationTests.test_combined_duplicate_quantity_cannot_exceed_stock) ... ok
+test_duplicate_rejection_preserves_prior_success (test_validation.ValidationTests.test_duplicate_rejection_preserves_prior_success) ... ok
+test_exact_stock_is_allowed_but_one_more_is_rejected (test_validation.ValidationTests.test_exact_stock_is_allowed_but_one_more_is_rejected) ... ok
+test_invalid_later_line_does_not_partially_save (test_validation.ValidationTests.test_invalid_later_line_does_not_partially_save) ... ok
+test_invalid_requests_do_not_modify_existing_state (test_validation.ValidationTests.test_invalid_requests_do_not_modify_existing_state) ... ok
+test_quantity_upper_boundary_99_with_stock_fixture (test_validation.ValidationTests.test_quantity_upper_boundary_99_with_stock_fixture) ... ok
+
+----------------------------------------------------------------------
+Ran 49 tests in 2.818s
+
+OK

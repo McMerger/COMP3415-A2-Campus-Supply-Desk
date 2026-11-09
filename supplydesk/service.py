@@ -7,6 +7,7 @@ STUDENT_DISCOUNT_THRESHOLD_CENTS = 5000
 STUDENT_DISCOUNT_PERCENT = 10
 FREE_DELIVERY_THRESHOLD_CENTS = 10000
 STANDARD_DELIVERY_CENTS = 600
+EXPRESS_DELIVERY_CENTS = 1200
 
 
 class OrderService:
@@ -23,8 +24,8 @@ class OrderService:
     def _build_quote(state, customer_type, items, fulfillment):
         if customer_type not in ("regular", "student"):
             raise ValueError("Customer type must be regular or student.")
-        if fulfillment not in ("pickup", "delivery"):
-            raise ValueError("Fulfillment must be pickup or delivery.")
+        if fulfillment not in ("pickup", "delivery", "express"):
+            raise ValueError("Fulfillment must be pickup, delivery or express.")
         if not isinstance(items, list) or not items:
             raise ValueError("An order must contain at least one item.")
         lines = []
@@ -62,6 +63,8 @@ class OrderService:
         delivery = 0
         if fulfillment == "delivery" and subtotal - discount < FREE_DELIVERY_THRESHOLD_CENTS:
             delivery = STANDARD_DELIVERY_CENTS
+        elif fulfillment == "express":
+            delivery = EXPRESS_DELIVERY_CENTS
         return {
             "customer_type": customer_type,
             "fulfillment": fulfillment,

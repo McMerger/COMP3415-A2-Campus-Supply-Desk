@@ -57,7 +57,7 @@ place_order(customer_type, items, fulfillment="pickup")
 Both operations require:
 
 - Customer type: exactly `regular` or `student`.
-- Fulfillment: exactly `pickup` or `delivery`.
+- Fulfillment: exactly `pickup`, `delivery`, or `express` (CR-01).
 - Items: a nonempty list of dictionaries, each containing `product_id` and `quantity`.
 - A valid product ID for every item.
 - An integer quantity from 1 through 99 inclusive for each item. Booleans, fractional numbers, and numeric strings are not valid quantities when calling the service directly.
@@ -88,6 +88,9 @@ All service calculations and stored monetary values use integer Canadian cents.
 4. Pickup is free.
 5. Delivery costs 600 cents ($6.00). Delivery is free when the subtotal minus the discount is at least 10,000 cents ($100.00).
 6. Total = subtotal minus discount plus delivery charge. No taxes or other charges apply.
+7. CR-01: Express always costs 1,200 cents ($12.00). This fee is never waived
+   and is not discounted. The student discount remains based on merchandise
+   subtotal only. Pickup and standard delivery rules remain unchanged.
 
 Examples—all amounts below are in cents:
 
@@ -96,6 +99,13 @@ Examples—all amounts below are in cents:
 - Regular delivery, three hoodies: subtotal 12,000; discount 0; delivery 0; total 12,000.
 
 These rules apply identically to quotes and placed orders.
+
+CR-01 examples: regular express with two notebooks totals 2,200 cents;
+student express with two hoodies totals 8,400 cents; regular express with
+three hoodies totals 13,200 cents. Express orders preserve their fulfillment,
+items and all original monetary values through retrieval, reopening and
+cancellation. Menu prompts and command help expose the express option;
+defaults remain regular customer and pickup. See `docs/CR-01.md`.
 
 ## Quotes
 
