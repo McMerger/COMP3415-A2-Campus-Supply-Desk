@@ -8,6 +8,8 @@ from reportlab.lib import colors
 from reportlab.lib.enums import TA_LEFT
 from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
 from reportlab.lib.units import inch
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.platypus import (
     SimpleDocTemplate, Paragraph, Spacer, PageBreak, Table, TableStyle,
     Preformatted,
@@ -15,35 +17,54 @@ from reportlab.platypus import (
 
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT = ROOT / "output" / "pdf" / "Campus-Supply-Desk-A2-Report.pdf"
+INLINE_FONT = "Courier"
+INLINE_SIZE = 8
 
 
 def inline(text):
     text = escape(text)
-    return re.sub(r"`([^`]+)`", r'<font name="Courier" size="8">\1</font>', text)
+    return re.sub(r"`([^`]+)`", lambda match:
+                  f'<font name="{INLINE_FONT}" size="{INLINE_SIZE}">{match[1]}</font>', text)
 
 
 def main(source_path=None, output_path=None,
          title="Campus Supply Desk - Assignment 2",
-         footer=""):
+         footer="", handwritten=True):
+    global INLINE_FONT, INLINE_SIZE
     source_path = Path(source_path) if source_path else ROOT / "docs" / "final-report.md"
     output_path = Path(output_path) if output_path else OUTPUT
+    regular, bold = "Times-Roman", "Times-Bold"
+    if handwritten:
+        font_dir = Path("C:/Windows/Fonts")
+        if (font_dir / "segoepr.ttf").exists() and (font_dir / "segoeprb.ttf").exists():
+            pdfmetrics.registerFont(TTFont("NotesHand", str(font_dir / "segoepr.ttf")))
+            pdfmetrics.registerFont(TTFont("NotesHandBold", str(font_dir / "segoeprb.ttf")))
+            regular, bold = "NotesHand", "NotesHandBold"
+        else:
+            print("Segoe Print is unavailable; using the typed fallback.")
+            handwritten = False
+    INLINE_FONT = regular if handwritten else "Courier"
+    INLINE_SIZE = 9 if handwritten else 8
+    ink = colors.HexColor("#1F3553") if handwritten else colors.black
     styles = getSampleStyleSheet()
-    styles.add(ParagraphStyle("BodyReport", fontName="Times-Roman", fontSize=11,
-                             leading=14, spaceAfter=7, textColor=colors.black))
+    styles.add(ParagraphStyle("BodyReport", fontName=regular,
+                             fontSize=10.3 if handwritten else 11,
+                             leading=15.2 if handwritten else 14,
+                             spaceAfter=8, textColor=ink))
     styles.add(ParagraphStyle("CellReport", parent=styles["BodyReport"], fontSize=9.2,
                              leading=11.5, spaceAfter=0))
     styles.add(ParagraphStyle("BulletReport", parent=styles["BodyReport"],
                              leftIndent=12, firstLineIndent=-9, spaceAfter=5))
-    styles["Title"].fontName = "Times-Bold"
+    styles["Title"].fontName = bold
     styles["Title"].fontSize = 17
-    styles["Title"].leading = 21
+    styles["Title"].leading = 23
     styles["Title"].alignment = TA_LEFT
-    styles["Title"].textColor = colors.black
+    styles["Title"].textColor = ink
     for name, size in (("Heading2", 13), ("Heading3", 11)):
-        styles[name].fontName = "Times-Bold"
+        styles[name].fontName = bold
         styles[name].fontSize = size
         styles[name].leading = size + 3
-        styles[name].textColor = colors.black
+        styles[name].textColor = ink
         styles[name].spaceBefore = 8
         styles[name].spaceAfter = 4
     source = source_path.read_text(encoding="utf-8")
@@ -66,7 +87,7 @@ def main(source_path=None, output_path=None,
                 code.append(lines[position])
                 position += 1
             flow.append(Preformatted("\n".join(code), ParagraphStyle(
-                "Code", fontName="Courier", fontSize=8.5, leading=12,
+                "Code", fontName=INLINE_FONT, fontSize=9, leading=15,
                 leftIndent=8, spaceBefore=4, spaceAfter=12)))
         elif line.startswith("|"):
             rows = []
@@ -113,8 +134,11 @@ def main(source_path=None, output_path=None,
 
     def decorate(canvas, doc):
         canvas.saveState()
-        canvas.setFont("Times-Roman", 9)
-        canvas.setFillColor(colors.black)
+        if handwritten:
+            canvas.setFillColor(colors.HexColor("#FFFEFA"))
+            canvas.rect(0, 0, 612, 792, fill=1, stroke=0)
+        canvas.setFont(regular, 9)
+        canvas.setFillColor(ink)
         if footer:
             canvas.drawString(54, 29, footer)
         canvas.drawRightString(558, 29, str(doc.page))
@@ -136,5 +160,6 @@ if __name__ == "__main__":
     parser.add_argument("--output", type=Path)
     parser.add_argument("--title", default="Campus Supply Desk - Assignment 2")
     parser.add_argument("--footer", default="")
+    parser.add_argument("--typed", action="store_true", help="Use a conventional serif font instead.")
     args = parser.parse_args()
-    main(args.source, args.output, args.title, args.footer)
+    main(args.source, args.output, args.title, args.footer, not args.typed)

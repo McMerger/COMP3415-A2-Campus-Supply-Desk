@@ -1,172 +1,154 @@
-# Campus Supply Desk - Assignment 2
+# Campus Supply Desk - A2
 
-Mailles Machiana | COMP3415 | November 8, 2026
+Mailles Machiana / COMP3415 / November 8, 2026
 
-Repository: https://github.com/McMerger/COMP3415-A2-Campus-Supply-Desk
+Repo: https://github.com/McMerger/COMP3415-A2-Campus-Supply-Desk
 
-## 1. How the program works
+## What the program does
 
-Campus Supply Desk is a Python program for ordering campus merchandise. It runs
-in the terminal and lets someone check stock, get a quote, place an order, view
-past orders and cancel an order. It stores prices as whole cents and saves stock
-and orders in a JSON file.
+Campus Supply Desk is a small terminal program for ordering campus merchandise.
+You can look at stock, get a quote, place an order and cancel it later. Orders
+and stock are saved in JSON. Money is stored in cents, so $12 is 1200 in the code.
 
-The entry point is `supplydesk/__main__.py`. It calls `cli.py`, which either runs
-a single command or opens the menu in `menu.py`. Both use `OrderService` in
-`service.py` for the actual calculations and order changes. `storage.py` handles
-the save file. A new session gets its starting products from `catalog.json`.
+`__main__.py` starts `cli.py`. With no command, it opens `menu.py`. Both call
+`OrderService` in `service.py`. That's where the prices and stock changes happen.
+`storage.py` reads and writes the save, and `catalog.json` supplies the starting
+products when there isn't a save yet.
 
-A quote checks stock but does not reserve anything. Placing the order checks
-again, reduces stock and saves the order with a new ID. Cancelling should return
-the items to stock once, while keeping the order and its original prices in
-history. The functional specification was used to decide the expected behavior,
-since the starter code does not always follow those rules.
+A quote doesn't reserve stock. An order has to check again before it saves.
+Cancelling should put the items back once and leave the old order in history.
+The functional spec was used to check these rules, rather than assuming the
+starter's output was right.
 
-## 2. Problems in the starter code
+## Problems that needed attention
 
-The references below are to `supplydesk/service.py` in the original commit,
-`82ed75e`. These are findings from the work after Checkpoint A.
+These references are to `supplydesk/service.py` at the starting commit `82ed75e`.
+They come from the work after Checkpoint A.
 
-### Repeated quote and order code
+### The same calculations were written twice
 
-Lines 15-60 and 65-112 repeat most of the same validation and pricing steps.
-Updating both copies makes it easy for quotes and orders to disagree. The shared
-parts now sit in `_build_quote`, which both operations call.
+Quote and place repeat validation and pricing in lines 15-60 and 65-112. A change
+could easily be made in one copy and missed in the other. Both now use
+`_build_quote`.
 
-### Student discount at exactly $50
+### Exactly $50 missed the student discount
 
-Lines 48 and 98 use `> 5000`, so a student buying two $25 bags gets no discount.
-The requirement says at least $50. Changing this to `>=` gives the correct $5
-reduction. Tests check this for both quotes and placed orders.
+Lines 48 and 98 say `> 5000`. Two $25 bags should get a $5 discount for a student,
+but didn't. Using `>=` fixes that edge case.
 
-### Duplicate products can oversell stock
+### Duplicate items could use more stock than was available
 
-Lines 36 and 86 check each line separately. With 20 notebooks in stock, lines of
-11 and 10 both pass even though together they need 21. The fix totals the
-requested quantities for each product before changing stock.
+Lines 36 and 86 only check one line at a time. With 20 notebooks, lines of 11 and
+10 both pass. The fix adds up each product's requested quantity before allowing
+an order.
 
-### Cancelling twice adds stock twice
+### Cancelling twice returned the same items twice
 
-Lines 142-147 return items to stock on every cancellation. Ordering two mugs and
-cancelling twice increases stock from 8 to 10. The method now returns immediately
-if the order is already cancelled.
+Lines 142-147 add stock back every time. Two mugs cancelled twice leave 10 in
+stock instead of 8. An already-cancelled order now returns without changing stock.
 
-### Repeated lookup and stock loops
+### More repeated loops and numbers
 
-The order search is repeated in lines 128-141, and the stock loops in lines
-114-117 and 142-145 do almost the same job in opposite directions. `_find_order`
-and `_change_stock` keep those operations in one place.
-
-### Unexplained pricing numbers
-
-Values such as 5000, 10000 and 600 appear in both pricing methods. Named constants
-now make the discount threshold, free-delivery threshold and fees easier to find.
+The order searches in lines 128-141 and stock loops in 114-117 and 142-145 were
+pulled into `_find_order` and `_change_stock`. Values such as 5000, 10000 and 600
+also got names, so the discount and delivery rules are easier to find.
+These were two separate maintenance problems: repeated operations and repeated
+pricing numbers.
 
 <!-- pagebreak -->
 
-## 3. Changes and testing
+## What changed, and how it was checked
 
-The refactoring and bug fixes were done separately. First, the common logic was
-moved into helpers without changing the rules. The same six failing assertions
-remained. Then the three bugs were corrected, and all 27 tests at that stage
-passed. That separation helps show which changes reorganized the code and which
-ones changed its behavior.
+The repeated code was moved first. At that point, the same six failing assertions
+were still there. The three bugs were fixed after that, and all 27 tests at that
+stage passed. This kept the refactor separate from the changes in behavior.
 
-The tests focus on amounts and saved data, where a small mistake has a noticeable
-result. They use temporary files so that runs do not change normal orders.
-Expected prices are worked out from the specification rather than calculated
-with the same production helper being tested.
+The tests use temporary saves. Expected prices come from the spec, not from the
+pricing code itself. Otherwise, a test could just repeat the same mistake.
 
-| Stage | Result | Evidence file in evidence/ |
-| --- | --- | --- |
-| Original starter tests | 4 pass | 01-starter-tests.txt |
-| Added baseline tests | 27 tests, 6 failures | 02-regressions-before.txt |
-| Refactoring before fixes | Same 6 failures | 03-refactor-before-fixes.txt |
-| Baseline fixes | 27 pass | 04-baseline-fixes.txt |
-| Express tests before implementation | 49 tests, 5 failures and 8 errors | 05-cr01-before.txt |
-| Completed version | 49 pass | 07-final-tests.txt |
+The runs went like this:
 
-The earlier failures show what the new tests caught before implementation.
+- Starter: 4 tests passed.
+- Added baseline tests: 27 tests, with 6 failures.
+- Shared-code refactor: the same 6 failures.
+- Bug fixes: all 27 passed.
+- Express tests before support: 49 tests, with 5 failures and 8 errors.
+- Completed version: all 49 passed, including the original four.
 
-Important checks include the exact $50 discount boundary, delivery below and at
-$100 after discount, invalid quantity types, duplicate items and repeated
-cancellation. Other tests check that rejected orders do not change the save file
-or use an ID, and that reopening the program preserves stock and order history.
+Logs 01-07 in `evidence/` keep those results. Some tests use subtests, so one
+method can check several inputs.
 
-Real command processes and scripted menu input check output, errors, defaults
-and confirmations. Seven deliberately introduced mistakes were caught in separate
-copies. Their output is in `08-targeted-mutations.json`.
+The important cases were the $50 discount, free standard delivery at $100 after
+discount, bad quantities, duplicate products and cancelling twice. Other checks
+make sure a rejected order doesn't change the save or use an ID. Reopening a save
+must keep stock, history and the prices originally charged.
 
-## 4. CR-01: Express delivery
+Command tests run real Python processes. Menu tests use scripted input to check
+defaults, errors and confirmation. Seven wrong changes were also tried in separate
+copies, and the tests caught all seven. Their output is in
+`evidence/08-targeted-mutations.json`.
 
-Express was added to the service, the command options and the menu prompt. It
-always costs $12, even on an order that would qualify for free standard delivery.
-The student discount still applies only to merchandise. Regular customer and
-pickup remain the defaults, and the README and command help describe express.
+## CR-01: express delivery
 
-| Request | Expected and observed total |
-| --- | --- |
-| Regular, two notebooks, express | $22.00 |
-| Student, two hoodies, express | $84.00 |
-| Regular, three hoodies, standard delivery | $120.00 |
-| Regular, three hoodies, express | $132.00 |
+Express is available in the service, commands and menu. It always adds $12.
+There's no free-express threshold, and the student discount doesn't apply to the
+fee. Regular customer and pickup are still the defaults. The menu prompt,
+command help and README now mention express.
 
-Express tests compare quotes and orders, reopen saves and cancel orders. Original
-items and totals stay recorded, stock is restored once, and IDs are not reused.
-Unsupported fulfillment values still raise an error.
+The client examples give these totals, and the tests match them:
+
+- Two notebooks, regular, express: $10 + $12 = $22.
+- Two hoodies, student, express: $80 - $8 + $12 = $84.
+- Three hoodies, regular: $120 with standard delivery, $132 with express.
+
+The tests also reopen and cancel express orders. Original items and totals stay
+recorded, stock comes back once, and order IDs aren't reused. Other fulfillment
+values are still rejected.
 
 <!-- pagebreak -->
 
-## 5. AI recommendations: what was useful and what was not
+## AI suggestions - which ones made sense?
 
-The following choices were checked against the specification and test results.
-The separate AI notes give a short record of the assistance and alternatives
-considered.
+The separate AI note records the assistance and options considered. The useful
+part wasn't just getting suggestions, but checking whether they fitted this
+program and its rules.
 
-The suggestion to share quote construction was useful because it addressed
-actual repetition in the code. Passing the already-loaded state into the helper
-also avoids loading the file again during placement. The quote/order comparison
-tests check that the two operations still agree.
+Sharing the quote calculations made sense. There was real duplication to remove,
+and the helper could use the state already loaded by the caller. Tests compare
+quotes and orders to check that they still agree.
 
-Dictionary lookup was used for internal stock changes, but not directly on raw
-product IDs. A list or dictionary passed as an ID would otherwise cause a
-TypeError. Those requests should raise ValueError, and the validation tests cover
-them. With only five products, keeping the existing scan is also simple enough.
+Using a dictionary for stock updates was also useful, but using one directly on
+raw product IDs was less straightforward. A list or dictionary used as an ID can
+cause TypeError. The service should raise ValueError for bad requests instead.
+With five products, keeping the small validation scan was fine.
 
-Using `round(subtotal * 0.1)` would look shorter, but it would not reliably meet
-the required rounding rule. Python uses ties-to-even rounding; the assignment
-requires half cents to round up. The integer formula was kept. A temporary price
-of 5,005 cents checks that the discount is 501 cents. That price is a test fixture
-because the normal catalog cannot produce this rounding case.
+`round(subtotal * 0.1)` looked like a quick way to calculate the discount. The
+problem is that Python rounds ties to even, while the spec says half cents go up.
+The integer calculation stayed. A test price of 5005 cents needs a 501-cent
+discount. The normal catalog can't reach that half-cent case, so it needs a fixture.
 
-Reusing standard delivery's free-delivery condition for express was also rejected.
-It would make expensive express orders free, which directly conflicts with CR-01.
-The separate express branch is small, and tests check that the fee is neither
-waived nor discounted.
+Express couldn't just reuse the standard-delivery threshold with a higher fee.
+That would make some express orders free. Keeping a separate branch was simpler
+and followed CR-01. Tests check that the fee is never waived or discounted.
 
-A database or a class hierarchy for delivery options would be more work than this
-change needs. The existing JSON storage and a short fulfillment conditional were
-kept. Duplicate lines were also left separate in the results; only their combined
-quantity is used for checking stock.
+A database or a set of delivery classes seemed unnecessary for this change.
+JSON and a short conditional were enough. Duplicate lines also stay separate in
+results; their quantities are only combined for the stock check.
 
-## 6. Result and limits
+## Where the work ended up
 
-All 49 tests pass on Windows with Python 3.12.10. The original four tests are still
-included. The seven selected mistake checks add confidence, but do not prove that
-every possible case is correct. No coverage percentage is claimed.
+All 49 tests pass on Windows with Python 3.12.10. That doesn't cover every possible
+case. No coverage percentage was measured. Menu input, permission errors, EOF and
+Ctrl+C are simulated, and Python 3.10 wasn't tested separately. Concurrent writers
+and recovery from a crash while saving are outside the supplied spec.
 
-Menu input is scripted, and permission errors, EOF and Ctrl+C are simulated.
-Python 3.10 was not separately tested. Concurrent writers and recovery from a
-crash while saving are outside the supplied specification.
-
-The public repository contains the source, tests and development history. To run
-the checks from the project folder:
+To run the checks from the project folder:
 
 ```sh
 python -m unittest discover -s tests -v
 python scripts/verify.py
 ```
 
-Sources: the starter README and functional specification, the supplied CR-01,
-and the test logs under `evidence/`. The original full assignment handout was
-unavailable, so its exact formatting and grading requirements still need checking.
+The repo keeps the code and commit history. Sources were the starter README,
+functional spec, CR-01 and saved test output. The full original handout wasn't
+available, so its exact formatting requirements still need checking.

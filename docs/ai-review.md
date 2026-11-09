@@ -1,45 +1,40 @@
-# Notes on AI recommendations
+# Notes on the AI suggestions
 
-Mailles Machiana | COMP3415 Assignment 2
+Mailles Machiana / COMP3415 A2
 
-AI assistance: Codex supported the tests, implementation and writing after
+AI assistance: Codex helped with tests, implementation and writing after
 Checkpoint A. The shared-builder suggestion came up during implementation;
-the other options below were considered when preparing this evaluation.
+the other options were considered when writing this evaluation.
 
-## Share the quote and order calculations - accepted
+## Sharing the calculations - useful
 
-The starter repeats the same rules in two methods. `_build_quote` now handles
-both, so a pricing change only needs to be made once. It uses the state already
-loaded by the caller. The refactor kept the same six failing assertions before
-the bug fixes, and tests compare quote and order results afterward.
+Quote and place had almost the same code. `_build_quote` removes that repetition
+and uses the state already loaded by the caller. The refactor kept the same
+failures before the bugs were fixed. Tests also compare quote and order prices.
 
-## Use dictionary lookup everywhere - partly accepted
+## Dictionary lookup - useful in some places
 
-A dictionary is useful for adjusting stock using validated product IDs. Using it
-directly on incoming IDs could raise TypeError for a list or dictionary instead
-of the required ValueError. The small catalog scan was kept for validation.
-Explicit type validation could make indexing safe too; this was a simplicity
-choice, not a measured performance improvement.
+It works for stock changes with validated IDs. Raw IDs are different: a list or
+dictionary can cause TypeError, when the service should raise ValueError.
+Keeping the small validation scan was fine for five products. This wasn't a
+measured speed improvement.
 
-## Use floating-point round() for the discount - rejected
+## round() for the discount - doesn't fit the rule
 
-`round(subtotal * 0.1)` does not express half-up rounding. The integer formula
-was kept. A 5,005-cent test fixture needs a discount of 501 cents, so it catches
-the difference. The bundled prices do not reach that half-cent case on their own.
+Python rounds ties to even. The spec wants half cents rounded up, so the integer
+formula stayed. A 5005-cent fixture needs a 501-cent discount and checks that case.
 
-## Reuse standard delivery's threshold for express - rejected
+## Reusing free delivery for express - wrong result
 
-CR-01 says the $12 express fee is never waived. A separate express branch avoids
-accidentally applying free standard delivery to it. High-value orders and student
-orders are tested to make sure the fee is neither waived nor discounted.
+CR-01 says express always costs $12. Reusing standard delivery's threshold would
+waive it on bigger orders. A separate branch keeps the rule clear. Tests check
+that the fee isn't waived or discounted.
 
-## Add a database or delivery classes - rejected
+## Bigger changes - not needed here
 
-Three delivery choices do not need a new hierarchy, and the assignment already
-uses JSON storage. Keeping those parts small makes the actual changes easier to
-check. Duplicate item lines also stay separate in the result; their quantities
-are combined only when checking stock.
+A database and delivery classes would add work without solving another required
+problem. JSON and a short conditional were enough. Duplicate lines stay separate;
+only the stock check adds their quantities together.
 
-The recommendations were checked against the specification and test results.
-The 49 passing tests and seven caught wrong changes support these decisions,
-but they are not proof that the application has no remaining bugs.
+The 49 passing tests and seven caught wrong changes support these decisions.
+They don't mean there can't be another bug.

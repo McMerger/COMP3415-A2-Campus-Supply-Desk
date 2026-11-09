@@ -19,3 +19,6 @@ Run `python -m unittest discover -s tests -v` to check the code. Use
 `python scripts/verify.py` for the seven extra mistake checks. Report PDFs can be
 rebuilt with `scripts/build_report.py` using ReportLab; the application itself
 needs only Python's standard library.
+
+The PDFs use a handwritten-style font embedded in the files. The build script
+uses Segoe Print when available; `--typed` gives a regular serif version.
