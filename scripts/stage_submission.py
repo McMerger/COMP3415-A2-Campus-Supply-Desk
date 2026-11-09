@@ -31,8 +31,10 @@ def main():
     files = {
         "output/pdf/Campus-Supply-Desk-A2-Report.pdf": "01-Assignment-Report.pdf",
         "docs/testing-evidence.md": "02-Testing-Evidence.md",
-        "docs/final-local-review.md": "04-Local-Review.md",
-        "docs/ai-review.md": "05-AI-Evaluation.md",
+        "output/pdf/Testing-Record.pdf": "02-Testing-Record.pdf",
+        "output/pdf/AI-Evaluation.pdf": "supporting/AI-Evaluation.pdf",
+        "docs/final-local-review.md": "supporting/Local-Review.md",
+        "docs/ai-review.md": "supporting/AI-Evaluation.md",
         "output/pdf/A2-Reconstructed-Handout-UNOFFICIAL.pdf": "supporting/Unofficial-Reconstructed-Handout.pdf",
         "output/Campus-Supply-Desk-A2-local-review.zip": "Campus-Supply-Desk-Source.zip",
     }
@@ -40,30 +42,39 @@ def main():
         target = STAGE / destination
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(ROOT / source, target)
+    for obsolete in ("04-Local-Review.md", "05-AI-Evaluation.md"):
+        old_copy = STAGE / obsolete
+        if old_copy.exists():
+            old_copy.unlink()
     shutil.copytree(ROOT / "evidence", STAGE / "evidence", dirs_exist_ok=True)
     pending = STAGE / "03-GitHub-Link-PENDING.txt"
     if pending.exists():
         pending.unlink()
     (STAGE / "03-GitHub-Link.txt").write_text(
         "https://github.com/McMerger/COMP3415-A2-Campus-Supply-Desk\n\n"
-        "Owner: McMerger (Mailles Machiana). Branch: main. Visibility: private.\n"
-        "Created and published with the user's explicit approval.\n"
-        "Ensure the grader can access this private repository before submission.\n"
-        "Assignment commits use the user's identity without AI co-author attribution.\n"
-        "The instructor starter commit retains its original author.\n",
+        "Mailles Machiana | COMP3415 Assignment 2\n"
+        "Public repository, main branch.\n",
         encoding="utf-8")
     (STAGE / "READ-ME-FIRST.txt").write_text(
-        "D2L SUBMISSION STAGING - NOT UPLOADED TO D2L\n\n"
-        "Primary files: 01-Assignment-Report.pdf, 02-Testing-Evidence.md and evidence/.\n"
-        "03-GitHub-Link.txt contains the actual published private repository URL.\n"
-        "04-Local-Review.md and 05-AI-Evaluation.md record the AI-assisted review.\n"
-        "The reconstructed handout is unofficial supporting material.\n"
-        "The original handout's exact upload requirements remain unknown.\n\n"
-        "Restore offline history with:\n"
+        "Assignment 2 submission files\n\n"
+        "The submit-to-d2l folder has the report, testing record, repository link\n"
+        "and evidence ZIP. Those are the final-submission files.\n"
+        "The separate AI note is under supporting; the report already includes it.\n"
+        "Other files here are backups, not extra report requirements.\n"
+        "The reconstructed handout is unofficial. Keep Checkpoint A separate.\n\n"
+        "Restore the backup Git history with:\n"
         f"git clone -b {BRANCH} Campus-Supply-Desk.bundle Campus-Supply-Desk\n"
         "Then run: python -m unittest discover -s tests -v\n\n"
         "GitHub publication is complete. D2L submission has not been performed.\n",
         encoding="utf-8")
+    upload = STAGE / "submit-to-d2l"
+    upload.mkdir(exist_ok=True)
+    for name in ("01-Assignment-Report.pdf", "02-Testing-Record.pdf", "03-GitHub-Link.txt"):
+        shutil.copyfile(STAGE / name, upload / name)
+    with ZipFile(upload / "04-Test-Evidence.zip", "w", ZIP_DEFLATED) as archive:
+        for path in sorted((STAGE / "evidence").rglob("*")):
+            if path.is_file():
+                archive.write(path, "evidence/" + path.relative_to(STAGE / "evidence").as_posix())
     bundle = STAGE / "Campus-Supply-Desk.bundle"
     git("bundle", "create", str(bundle), BRANCH)
     verified = subprocess.run(["git", "bundle", "verify", str(bundle)], cwd=ROOT,
@@ -100,8 +111,14 @@ def main():
         for path, digest in hashes.items():
             if hashlib.sha256(archive.read(path)).hexdigest() != digest:
                 raise RuntimeError(f"Submission archive checksum mismatch: {path}")
+    upload_zip = ROOT / "output" / "Campus-Supply-Desk-A2-submit-to-d2l.zip"
+    with ZipFile(upload_zip, "w", ZIP_DEFLATED) as archive:
+        for path in sorted(upload.iterdir()):
+            if path.is_file():
+                archive.write(path, path.name)
     print("Offline restore: 49 test methods passed; archive checksums verified.")
     print(output)
+    print(upload_zip)
 
 
 if __name__ == "__main__":

@@ -1,83 +1,46 @@
-# AI recommendations and critical evaluation
+# Notes on AI recommendations
 
-This is an AI-assisted decision record prepared during implementation. It is
-not a verbatim full chat transcript, an independent student critique, or a
-replacement for the already-submitted Checkpoint A. The student should review
-these decisions and add their own assessment before submitting the report.
+Mailles Machiana | COMP3415 Assignment 2
 
-The task supplied to Codex was to proceed with tests, refactoring, CR-01 and
-local deliverables after Checkpoint A, keeping everything local before push
-approval. Evidence includes inspected starter code, FUNCTIONAL_SPEC.md,
-the supplied CR-01, and recorded before/after runs.
+Codex helped with the tests, implementation and writing after Checkpoint A.
+This is a short decision record, not a full prompt transcript. The shared-builder
+suggestion came up during implementation; the other options below were evaluated
+while preparing these notes. These notes were also prepared with AI assistance.
 
-## R1 - Share request validation and pricing
+## Share the quote and order calculations - accepted
 
-Recommendation: extract a single quote builder used by both quote and place.
-Decision: accepted. The two starter methods repeated nearly the same request
-validation, line construction and money rules. `_build_quote` receives the
-loaded state; placement validates that same state before reducing inventory.
-Calling public `quote()` from placement instead would load the file again and
-obscure which snapshot is being changed. Separate quote/order agreement and
-recheck-after-quote tests check the result. The structural refactor was
-committed separately and retained all six pre-existing failing assertions.
+The starter repeats the same rules in two methods. `_build_quote` now handles
+both, so a pricing change only needs to be made once. It uses the state already
+loaded by the caller. The refactor kept the same six failing assertions before
+the bug fixes, and tests compare quote and order results afterward.
 
-## R2 - Use dictionary lookup everywhere
+## Use dictionary lookup everywhere - partly accepted
 
-Recommendation: replace all catalog scans with an index for faster lookup.
-Decision: accepted only for internal stock changes; rejected for unvalidated
-external product IDs. A list/dict supplied as a product ID must produce
-ValueError as an invalid request, but a direct dictionary lookup can raise
-TypeError for an unhashable key. The public validation path retains its small
-catalog scan. Invalid list/dict product IDs are exercised in the validation
-test. `_change_stock` indexes only validated snapshot lines. No performance
-benefit is claimed for this five-product application.
+A dictionary is useful for adjusting stock using validated product IDs. Using it
+directly on incoming IDs could raise TypeError for a list or dictionary instead
+of the required ValueError. The small catalog scan was kept for validation.
+Explicit type validation could make indexing safe too; this was a simplicity
+choice, not a measured performance improvement.
 
-## R3 - Simplify discounts with floating-point round()
+## Use floating-point round() for the discount - rejected
 
-Recommendation: compute `round(subtotal * 0.1)`.
-Decision: rejected. The specification requires integer cents and half-up
-rounding. Python rounding uses ties to even, and binary floats are unnecessary.
-The existing integer formula is retained. A 5,005-cent synthetic merchandise
-fixture requires a 501-cent discount; rounding down is caught by a targeted
-mutation. This fixture is necessary because bundled prices cannot yield a
-half-cent discount. This alternative was evaluated, not committed or run as
-an implementation.
+`round(subtotal * 0.1)` does not express half-up rounding. The integer formula
+was kept. A 5,005-cent test fixture needs a discount of 501 cents, so it catches
+the difference. The bundled prices do not reach that half-cent case on their own.
 
-## R4 - Treat express as a larger standard delivery fee
+## Reuse standard delivery's threshold for express - rejected
 
-Recommendation: reuse standard delivery's threshold and change only its fee.
-Decision: rejected. CR-01 explicitly prohibits waiving express fees. A distinct
-express branch always sets 1,200 cents after calculating the merchandise
-discount. Tests cover high-value regular and student orders, merchandise
-below the student threshold, and the exact discount threshold. Mutations that
-waive or discount express fees are detected.
+CR-01 says the $12 express fee is never waived. A separate express branch avoids
+accidentally applying free standard delivery to it. High-value orders and student
+orders are tested to make sure the fee is neither waived nor discounted.
 
-## R5 - Introduce delivery strategy classes or a database
+## Add a database or delivery classes - rejected
 
-Recommendation: generalize fulfillment into classes and replace JSON storage.
-Decision: rejected for this scope. Three fixed fulfillment values do not
-justify a strategy hierarchy, and database migration would change the starter
-application beyond the requested improvement. The small conditional and schema
-version 1 remain. Crash recovery and concurrent writers are expressly outside
-the functional spec. This option was considered, not implemented.
+Three delivery choices do not need a new hierarchy, and the assignment already
+uses JSON storage. Keeping those parts small makes the actual changes easier to
+check. Duplicate item lines also stay separate in the result; their quantities
+are combined only when checking stock.
 
-## R6 - Combine duplicate lines in returned orders
-
-Recommendation: merge duplicate product lines to simplify stock handling.
-Decision: adapted. Combined quantities are tracked for stock validation while
-the original ordered lines remain separate. The spec permits separate lines;
-retaining them reduces observable output changes. A duplicate request exactly
-at stock capacity is placed, preserved as two lines and restored by cancelling.
-
-## Limits of this evaluation
-
-Record provenance: R1 describes the shared-builder recommendation made during
-implementation. R2-R6 document design alternatives evaluated by the AI while
-preparing this decision record; they are not attributed to an earlier model
-response or an unavailable prompt transcript. The options and their critiques
-must not be presented as independent human recommendations or human review.
-
-Passing tests and seven detected hand-selected mutations support specific
-claims; they do not prove exhaustive correctness. The report and critique were
-generated with AI assistance and have not yet been independently reviewed by
-the student. No original Checkpoint A text was available for comparison.
+The recommendations were checked against the specification and test results.
+The 49 passing tests and seven caught wrong changes support these decisions,
+but they are not proof that the application has no remaining bugs.

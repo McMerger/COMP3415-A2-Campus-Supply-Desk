@@ -2,7 +2,7 @@
 
 Student submission repository:
 [McMerger/COMP3415-A2-Campus-Supply-Desk](https://github.com/McMerger/COMP3415-A2-Campus-Supply-Desk)
-(private, `main`). The [PDF report](output/pdf/Campus-Supply-Desk-A2-Report.pdf),
+(public, `main`). The [PDF report](output/pdf/Campus-Supply-Desk-A2-Report.pdf),
 [testing evidence](docs/testing-evidence.md) and [AI evaluation](docs/ai-review.md)
 document the completed post-checkpoint work. The original instructor starter
 and its attribution remain in Git history.

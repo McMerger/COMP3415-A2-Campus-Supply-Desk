@@ -1,44 +1,21 @@
-# Local review handoff
+# Submission files
 
-This checkout contains post-Checkpoint-A work for Campus Supply Desk. All
-changes are on `assignment-a2/local-improvements`, published with the user's
-approval to `main` at https://github.com/McMerger/COMP3415-A2-Campus-Supply-Desk.
-The repository is private. The instructor repository is retained as `upstream`;
-do not push assignment changes there.
+For the final A2 folder in D2L, use the report PDF, testing record and your
+repository link:
 
-## Start here
+https://github.com/McMerger/COMP3415-A2-Campus-Supply-Desk
 
-1. Read `output/pdf/Campus-Supply-Desk-A2-Report.pdf`.
-2. Review `docs/testing-evidence.md` and `docs/ai-review.md`.
-3. Run `python -m unittest discover -s tests -v` (49 methods should pass).
-4. Run `python scripts/verify.py` to reproduce final logs and 7 targeted mutations.
-5. Inspect `git diff 82ed75e -- supplydesk tests` and `git log --oneline`.
+The repository is public. The ready-to-upload files are in
+`output/submission/submit-to-d2l/`. The testing record refers to logs supplied
+inside the evidence ZIP. The separate AI note expands on the section already
+included in the report.
 
-## Before final submission
+The outer submission package also keeps the source snapshot, Git bundle and
+offline verification log as backup. The reconstructed handout is unofficial
+background material, not a submission requirement. Keep Checkpoint A separate.
+Nothing has been uploaded to D2L.
 
-- Compare the original assignment handout to the local report and evidence.
-  The handout was not available in this chat.
-- Review the AI-assisted analysis and add the student's own critical assessment
-  and any required identity fields or AI-use disclosures/transcripts.
-- Keep Checkpoint A separate; its contents were not regenerated here.
-- Repository creation and push were explicitly approved and completed. The
-  actual URL is included in the report and staged link file. Ensure grader
-  access to the private repository before submission.
-- Submit the reviewed PDF, repository link and evidence to the final A2 D2L
-  folder. No submission action has occurred.
-
-## Archive
-
-`output/Campus-Supply-Desk-A2-local-review.zip` is a snapshot of tracked files
-at the packaging commit, including the PDF, source, tests and evidence. It
-excludes `.git`, temporary PDF images, runtime data and the ZIP itself. Use
-the original local checkout to inspect the actual development commit history.
-Recreate it from a clean checkout with `python scripts/package_review.py`.
-The packager preserves working-file bytes and validates all recorded source
-hashes and the archived PDF against the reviewed original.
-
-## Report rendering
-
-The app and tests need only Python's standard library. PDF regeneration uses
-ReportLab: `python -m pip install reportlab`, then `python scripts/build_report.py`.
-ReportLab is a reporting dependency and is not imported by the application.
+Run `python -m unittest discover -s tests -v` to check the code. Use
+`python scripts/verify.py` for the seven extra mistake checks. Report PDFs can be
+rebuilt with `scripts/build_report.py` using ReportLab; the application itself
+needs only Python's standard library.

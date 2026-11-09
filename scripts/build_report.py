@@ -23,29 +23,29 @@ def inline(text):
 
 
 def main(source_path=None, output_path=None,
-         title="Campus Supply Desk - A2 local review report",
-         footer="Local review copy  |  AI-assisted  |  November 8, 2026"):
+         title="Campus Supply Desk - Assignment 2",
+         footer=""):
     source_path = Path(source_path) if source_path else ROOT / "docs" / "final-report.md"
     output_path = Path(output_path) if output_path else OUTPUT
     styles = getSampleStyleSheet()
-    styles.add(ParagraphStyle("BodyReport", fontName="Helvetica", fontSize=10,
-                             leading=14, spaceAfter=9, textColor=colors.HexColor("#253145")))
-    styles.add(ParagraphStyle("CellReport", parent=styles["BodyReport"], fontSize=8.4,
-                             leading=11, spaceAfter=0, wordWrap="CJK"))
+    styles.add(ParagraphStyle("BodyReport", fontName="Times-Roman", fontSize=11,
+                             leading=14, spaceAfter=7, textColor=colors.black))
+    styles.add(ParagraphStyle("CellReport", parent=styles["BodyReport"], fontSize=9.2,
+                             leading=11.5, spaceAfter=0))
     styles.add(ParagraphStyle("BulletReport", parent=styles["BodyReport"],
                              leftIndent=12, firstLineIndent=-9, spaceAfter=5))
-    styles["Title"].fontName = "Helvetica-Bold"
-    styles["Title"].fontSize = 28
-    styles["Title"].leading = 32
+    styles["Title"].fontName = "Times-Bold"
+    styles["Title"].fontSize = 17
+    styles["Title"].leading = 21
     styles["Title"].alignment = TA_LEFT
-    styles["Title"].textColor = colors.HexColor("#153C58")
-    for name, size in (("Heading2", 18), ("Heading3", 11)):
-        styles[name].fontName = "Helvetica-Bold"
+    styles["Title"].textColor = colors.black
+    for name, size in (("Heading2", 13), ("Heading3", 11)):
+        styles[name].fontName = "Times-Bold"
         styles[name].fontSize = size
-        styles[name].leading = size + 4
-        styles[name].textColor = colors.HexColor("#153C58")
-        styles[name].spaceBefore = 10
-        styles[name].spaceAfter = 8
+        styles[name].leading = size + 3
+        styles[name].textColor = colors.black
+        styles[name].spaceBefore = 8
+        styles[name].spaceAfter = 4
     source = source_path.read_text(encoding="utf-8")
     # Use predictable glyphs in the PDF's built-in fonts.
     source = source.replace("\u2014", " - ").replace("\u2013", "-").replace("\u2019", "'")
@@ -79,14 +79,13 @@ def main(source_path=None, output_path=None,
             widths = ([155, 349] if columns == 2 else [127, 230, 147])
             table = Table(rows, colWidths=widths, repeatRows=1, hAlign="LEFT")
             table.setStyle(TableStyle([
-                ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#E1EBF1")),
-                ("ROWBACKGROUNDS", (0, 1), (-1, -1), [colors.white, colors.HexColor("#F5F8FA")]),
+                ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#EEEEEE")),
                 ("VALIGN", (0, 0), (-1, -1), "TOP"),
                 ("LEFTPADDING", (0, 0), (-1, -1), 7),
                 ("RIGHTPADDING", (0, 0), (-1, -1), 7),
-                ("TOPPADDING", (0, 0), (-1, -1), 7),
-                ("BOTTOMPADDING", (0, 0), (-1, -1), 7),
-                ("LINEBELOW", (0, 0), (-1, 0), 0.6, colors.HexColor("#8EABBD")),
+                ("TOPPADDING", (0, 0), (-1, -1), 5),
+                ("BOTTOMPADDING", (0, 0), (-1, -1), 5),
+                ("LINEBELOW", (0, 0), (-1, 0), 0.6, colors.black),
             ]))
             flow.extend([table, Spacer(1, 10)])
             continue
@@ -114,12 +113,10 @@ def main(source_path=None, output_path=None,
 
     def decorate(canvas, doc):
         canvas.saveState()
-        canvas.setStrokeColor(colors.HexColor("#BDD0DC"))
-        canvas.line(54, 749, 558, 749)
-        canvas.setFont("Helvetica", 8)
-        canvas.setFillColor(colors.HexColor("#4B6475"))
-        canvas.drawString(54, 760, "COMP3415  /  CAMPUS SUPPLY DESK")
-        canvas.drawString(54, 29, footer)
+        canvas.setFont("Times-Roman", 9)
+        canvas.setFillColor(colors.black)
+        if footer:
+            canvas.drawString(54, 29, footer)
         canvas.drawRightString(558, 29, str(doc.page))
         canvas.restoreState()
 
@@ -127,7 +124,7 @@ def main(source_path=None, output_path=None,
     doc = SimpleDocTemplate(str(output_path), pagesize=(612, 792),
                             rightMargin=54, leftMargin=54, topMargin=56,
                             bottomMargin=48, title=title,
-                            author="AI-assisted local project report")
+                            author="Mailles Machiana")
     doc.build(flow, onFirstPage=decorate, onLaterPages=decorate)
     print(output_path)
 
@@ -137,7 +134,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--source", type=Path)
     parser.add_argument("--output", type=Path)
-    parser.add_argument("--title", default="Campus Supply Desk - A2 local review report")
-    parser.add_argument("--footer", default="Local review copy  |  AI-assisted  |  November 8, 2026")
+    parser.add_argument("--title", default="Campus Supply Desk - Assignment 2")
+    parser.add_argument("--footer", default="")
     args = parser.parse_args()
     main(args.source, args.output, args.title, args.footer)
